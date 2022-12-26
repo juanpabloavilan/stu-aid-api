@@ -22,8 +22,8 @@ const User = new UserService();
 //GET lista de usuarios.
 router.get("/", async (req, res, next) => {
   try {
-    const usuariosLista = await User.findAll();
-    res.json(usuariosLista);
+    const userList = await User.findAll();
+    res.json(userList);
   } catch (e) {
     next(e);
   }
@@ -36,11 +36,28 @@ router.get(
   async (req, res, next) => {
     const id = Number(req.params.id);
     try {
-      const usuario = await User.findById(id);
-      console.log(usuario);
-      if (!usuario) return next(boom.notFound("Not user found by this id"));
-      return res.json(usuario);
-    } catch {
+      const user = await User.findById(id);
+      return res.json(user);
+    } catch (e) {
+      return next(e);
+    }
+  }
+);
+
+//Registrar usuario.
+router.post(
+  "/",
+  (req, res, next) => {
+    console.log(req.body);
+    next();
+  },
+  validatorHandler(createUserSchema, "body"),
+  async (req, res, next) => {
+    const userData = req.body;
+    try {
+      const newUser = await User.createUser(userData);
+      return res.status(201).json(newUser);
+    } catch (e) {
       return next(e);
     }
   }
