@@ -24,14 +24,8 @@ router.get(
     try {
       let coursesList = [];
       const { sub } = req.user;
-      if (!sub) {
-        console.log("FindAll");
-        coursesList = await Course.findAll();
-      } else {
-        console.log("FindAllByStudentId");
-        coursesList = await Course.findAllByStudentId(Number(sub));
-        console.log(sub);
-      }
+      coursesList = await Course.findAllByStudentId(Number(sub));
+      console.log(sub);
       res.json(coursesList);
     } catch (e) {
       next(e);

@@ -46,7 +46,7 @@ class CourseService {
   async delete(id) {
     const courseFound = await this.findById(id);
     const deletedCourse = await courseFound.destroy();
-    return deletedCourse;
+    return { deletedCourse, id };
   }
 }
 

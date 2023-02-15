@@ -15,7 +15,6 @@ const createCourseSchema = Joi.object({
 });
 
 const updateCourseSchema = Joi.object({
-  //getCourseSchema must be used before get
   name: name,
   status: status,
   priority: priority,

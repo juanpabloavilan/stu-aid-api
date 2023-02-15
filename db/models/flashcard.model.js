@@ -17,7 +17,7 @@ const FLASHCARDS_SCHEMA = {
       key: "id",
     },
     onUpdate: "CASCADE",
-    onDelete: "SET NULL",
+    onDelete: "CASCADE",
   },
   type: {
     allowNull: false,
@@ -28,7 +28,7 @@ const FLASHCARDS_SCHEMA = {
     type: DataTypes.JSONB,
   },
   status: {
-    type: DataTypes.ENUM(["active", "dismissed"]),
+    type: DataTypes.ENUM(["active", "unactive"]),
     defaultValue: "active",
   },
   lastReviewed: {

@@ -12,7 +12,7 @@ function validatorHandler(schema, property) {
     if (error) {
       throw boom.badRequest(error);
     }
-    //Sigue al siguiente middleware 😎
+    //Sigue al siguiente middleware
     next();
   };
 }

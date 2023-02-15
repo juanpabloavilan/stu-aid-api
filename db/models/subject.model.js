@@ -17,7 +17,7 @@ const SUBJECTS_SCHEMA = {
       key: "id",
     },
     onUpdate: "CASCADE",
-    onDelete: "SET NULL",
+    onDelete: "CASCADE",
   },
   name: {
     allowNull: false,

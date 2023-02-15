@@ -23,4 +23,15 @@ router.post(
   }
 );
 
+router.post(
+  "/jwt-login",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    const { username, sub } = req.user;
+    res.json({
+      username,
+      sub,
+    });
+  }
+);
 module.exports = router;
