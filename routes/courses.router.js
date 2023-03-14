@@ -12,6 +12,10 @@ const passport = require("passport");
 const checkOwnerPermission = require("../middlewares/auth.handler");
 const Course = new CourseService();
 
+const subjectsRouter = require("./subjects.router");
+
+router.use("/:courseId/subjects", subjectsRouter);
+
 /**
  * Ruta de cursos
  * /courses/
@@ -20,7 +24,6 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-    console.log("entro");
     try {
       let coursesList = [];
       const { sub } = req.user;
@@ -50,14 +53,14 @@ router.post(
 );
 
 router.get(
-  "/:id",
+  "/:courseId",
   passport.authenticate("jwt", { session: false }),
   validatorHandler(getCourseSchema, "params"),
-  checkOwnerPermission(Course, "params", "id"),
+  checkOwnerPermission(Course, "params", "courseId"),
   async (req, res, next) => {
-    const { id } = req.params;
+    const { courseId } = req.params;
     try {
-      const course = await Course.findById(id);
+      const course = await Course.findById(courseId);
       return res.json(course);
     } catch (error) {
       next(error);
@@ -66,16 +69,16 @@ router.get(
 );
 
 router.put(
-  "/:id",
+  "/:courseId",
   passport.authenticate("jwt", { session: false }),
   validatorHandler(getCourseSchema, "params"),
   validatorHandler(updateCourseSchema, "body"),
-  checkOwnerPermission(Course, "params", "id"),
+  checkOwnerPermission(Course, "params", "courseId"),
   async (req, res, next) => {
-    const { id } = req.params;
+    const { courseId } = req.params;
     const payload = req.body;
     try {
-      const updatedCourse = await Course.update(id, payload);
+      const updatedCourse = await Course.update(courseId, payload);
       res.json(updatedCourse);
     } catch (error) {
       next(error);
@@ -84,14 +87,14 @@ router.put(
 );
 
 router.delete(
-  "/:id",
+  "/:courseId",
   passport.authenticate("jwt", { session: false }),
   validatorHandler(deletedCourseSchema, "params"),
-  checkOwnerPermission(Course, "params", "id"),
+  checkOwnerPermission(Course, "params", "courseId"),
   async (req, res, next) => {
-    const { id } = req.params;
+    const { courseId } = req.params;
     try {
-      const deletedCourse = await Course.delete(id);
+      const deletedCourse = await Course.delete(courseId);
       return res.json(deletedCourse);
     } catch (error) {
       next(error);

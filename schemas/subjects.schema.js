@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const id = Joi.number().integer();
+const subjectId = Joi.number().integer();
 const courseId = Joi.number().integer();
 const name = Joi.string().min(2).max(255);
 const status = Joi.string().valid("active", "unactive");
@@ -12,18 +12,19 @@ const CREATE_SUBJECT_SCHEMA = Joi.object({
 });
 
 const GET_SUBJECT_SCHEMA = Joi.object({
-  id: id.required(),
+  subjectId: subjectId.required(),
   courseId: courseId.required(),
 });
 
 const UPDATE_SUBJECT_SCHEMA = Joi.object({
-  id: id.required(),
+  subjectId: subjectId.required(),
   name,
   status,
 });
 
 const DELETE_SUBJECT_SCHEMA = Joi.object({
-  id: id.required(),
+  subjectId: subjectId.required(),
+  courseId: courseId.required(),
 });
 
 module.exports = {

@@ -10,7 +10,6 @@ function routesApi(app) {
   app.use("/users", usersRouter);
   app.use("/courses", coursesRouter);
   app.use("/auth", authRouter);
-  app.use("/subjects", subjectsRouter);
 }
 
 module.exports = routesApi;

@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const id = Joi.number().positive();
+const courseId = Joi.number().positive();
 const name = Joi.string().min(1).max(255);
 const status = Joi.string().valid("active", "dismissed");
 const priority = Joi.number().integer().min(1).max(5);
@@ -22,11 +22,11 @@ const updateCourseSchema = Joi.object({
 });
 
 const getCourseSchema = Joi.object({
-  id: id.required(),
+  courseId: courseId.required(),
 });
 
 const deletedCourseSchema = Joi.object({
-  id: id.required(),
+  courseId: courseId.required(),
 });
 
 module.exports = {

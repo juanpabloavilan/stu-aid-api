@@ -25,13 +25,25 @@ class SubjectService {
       },
     });
 
-    if (!subject) throw boom.notFound;
+    if (!subject) {
+      throw boom.notFound("No se encontro tema");
+    }
     return subject;
   }
 
   async create(payload) {
-    const newSubject = await models.Subject.create(payload);
+    const newSubject = await models.Subject.create(payload, {
+      include: {
+        association: "flashcards",
+      },
+    });
     return newSubject;
+  }
+
+  async delete(id) {
+    const subject = await this.findById(id);
+    const deletedSubject = subject.destroy({ returning: ["id"] });
+    return deletedSubject;
   }
 }
 
