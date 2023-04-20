@@ -6,6 +6,7 @@ const {
   FLASHCARDS_TABLE_NAME,
   FLASHCARDS_SCHEMA,
 } = require("./flashcard.model");
+const calculateNextSession = require("../../utils/study.session/nextSession");
 
 async function setUpModels(sequelize) {
   const User = sequelize.define("User", USERS_SCHEMA, {
@@ -27,6 +28,19 @@ async function setUpModels(sequelize) {
     sequelize,
     tableName: FLASHCARDS_TABLE_NAME,
     timestamps: true,
+    hooks: {
+      afterUpsert: async ([flashcard, created], options) => {
+        flashcard.nextRevision = calculateNextSession(
+          flashcard.lastReviewed,
+          flashcard.lastScore
+        );
+        console.log(
+          "🚀 ~ file: index.js:38 ~ setUpModels ~ flashcard:",
+          flashcard
+        );
+        await flashcard.save();
+      },
+    },
   });
 
   User.hasMany(Course, {

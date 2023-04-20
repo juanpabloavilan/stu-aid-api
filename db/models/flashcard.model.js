@@ -9,6 +9,10 @@ const FLASHCARDS_SCHEMA = {
     autoIncrement: true,
     type: DataTypes.INTEGER,
   },
+  userId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
   subjectId: {
     allowNull: false,
     type: DataTypes.INTEGER,
@@ -32,12 +36,16 @@ const FLASHCARDS_SCHEMA = {
     defaultValue: "active",
   },
   lastReviewed: {
+    allowNull: false,
     field: "last_reviewed",
     type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
   },
   lastScore: {
+    allowNull: false,
     field: "last_score",
     type: DataTypes.DOUBLE,
+    defaultValue: 0,
     validate: {
       min: 0,
       max: 5,
@@ -50,6 +58,10 @@ const FLASHCARDS_SCHEMA = {
   updatedAt: {
     field: "updated_at",
     type: DataTypes.DATE,
+  },
+  nextRevision: {
+    type: DataTypes.DATE,
+    field: "next_revision",
   },
 };
 

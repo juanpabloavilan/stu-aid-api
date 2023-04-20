@@ -1,10 +1,6 @@
-const { where } = require("sequelize");
 const { models } = require("../../lib/sequelize");
 const boom = require("@hapi/boom");
 
-/**
- * TODO: Complete route of post subject and validate that the given subject is from a course that belongs to the user logged in
- */
 class SubjectService {
   constructor() {}
 
@@ -22,6 +18,7 @@ class SubjectService {
     const subject = await models.Subject.findByPk(id, {
       include: {
         association: "flashcards",
+        order: [["createdAt", "asc"]],
       },
     });
 
@@ -31,13 +28,14 @@ class SubjectService {
     return subject;
   }
 
-  async create(payload) {
-    const newSubject = await models.Subject.create(payload, {
-      include: {
-        association: "flashcards",
-      },
-    });
-    return newSubject;
+  async upsert(payload) {
+    console.log(typeof payload.flashcards);
+    const [newSubject, isCreated] = await models.Subject.upsert(payload);
+    // const flashcards = await models.Flashcard.bulkCreate(payload.flashcards, {
+    //   fields: ["subjectId", "id", "type", "payload"],
+    //   updateOnDuplicate: ["id", "payload", "type", "status"],
+    // });
+    return { ...newSubject.dataValues };
   }
 
   async delete(id) {

@@ -4,12 +4,14 @@ const SubjectService = require("../services/subjects.service");
 const {
   CREATE_SUBJECT_SCHEMA,
   GET_SUBJECT_SCHEMA,
-  UPDATE_SUBJECT_SCHEMA,
+  UPSERT_SUBJECT_FLASHCARD_SCHEMA,
   DELETE_SUBJECT_SCHEMA,
 } = require("../schemas/subjects.schema");
 const validatorHandler = require("../middlewares/validator.handler");
 const passport = require("passport");
 const checkOwnerPermission = require("../middlewares/auth.handler");
+
+router.use("/:subjectId/flashcards", require("./flashcards.router"));
 
 // courses/:id/subjects/
 const Subject = new SubjectService();
@@ -43,13 +45,13 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  validatorHandler(CREATE_SUBJECT_SCHEMA, "body"),
+  validatorHandler(UPSERT_SUBJECT_FLASHCARD_SCHEMA, "body"),
   checkOwnerPermission(Subject, "body", "courseId"),
   async (req, res, next) => {
+    console.log(req.body);
     const payload = req.body;
-
     try {
-      const newSubject = await Subject.create(payload);
+      const newSubject = await Subject.upsert(payload);
       return res.json(newSubject);
     } catch (error) {
       next(error);

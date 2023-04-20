@@ -32,9 +32,42 @@ const payload = Joi.when("type", [
   },
 ]);
 
-const CREATE_FLASHCARD_SCHEMA = Joi.object({
+const lastReviewed = Joi.string().isoDate().allow(null);
+const lastScore = Joi.number().allow(null);
+const createdAt = Joi.string().isoDate().allow(null);
+const updatedAt = Joi.string().isoDate().allow(null);
+
+const UPSERT_FLASHCARD_SCHEMA = Joi.object({
+  id: id,
   subjectId: subjectId.required(),
   type: type.required(),
   status,
   payload: payload.required(),
+  lastReviewed,
+  lastScore,
+  createdAt,
+  updatedAt,
 });
+
+const FLASHCARD = {
+  id: id,
+  subjectId: subjectId.required(),
+  type: type.required(),
+  status,
+  payload: payload.required(),
+  lastReviewed,
+  lastScore,
+  createdAt,
+  updatedAt,
+};
+
+const DELETE_FLASHCARD_SCHEMA = Joi.object({
+  flashcardId: id.required(),
+  courseId: id.required(),
+  subjectId: id.required(),
+});
+module.exports = {
+  UPSERT_FLASHCARD_SCHEMA,
+  FLASHCARD,
+  DELETE_FLASHCARD_SCHEMA,
+};
