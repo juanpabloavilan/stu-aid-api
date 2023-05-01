@@ -38,7 +38,7 @@ const FLASHCARDS_SCHEMA = {
   lastReviewed: {
     allowNull: false,
     field: "last_reviewed",
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     defaultValue: DataTypes.NOW,
   },
   lastScore: {
@@ -60,7 +60,7 @@ const FLASHCARDS_SCHEMA = {
     type: DataTypes.DATE,
   },
   nextRevision: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     field: "next_revision",
   },
 };

@@ -40,6 +40,17 @@ async function setUpModels(sequelize) {
         );
         await flashcard.save();
       },
+      // afterSave: async (flashcard, options) => {
+      //   flashcard.nextRevision = calculateNextSession(
+      //     flashcard.lastReviewed,
+      //     flashcard.lastScore
+      //   );
+      //   await flashcard.save();
+      //   console.log(
+      //     "🚀 ~ file: index.js:49 ~ afterSaaave: ~ flashcard:",
+      //     flashcard
+      //   );
+      // },
     },
   });
 

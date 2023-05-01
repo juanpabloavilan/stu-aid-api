@@ -19,11 +19,7 @@ router.get(
     try {
       const userId = Number(req.user.sub);
       const flashcardsToReview = await StudySession.today(userId, req.query);
-      // console.log(
-      //   "🚀 ~ file: studysession.router.js:19 ~ flashcardsToReview:",
-      //   flashcardsToReview,
-      //   flashcardsToReview.length
-      // );
+      
       return res.json({ flashcards: flashcardsToReview });
     } catch (error) {
       next(error);

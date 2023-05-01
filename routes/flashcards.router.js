@@ -7,6 +7,8 @@ const FlashcardService = require("../services/flashcards.service");
 const {
   UPSERT_FLASHCARD_SCHEMA,
   DELETE_FLASHCARD_SCHEMA,
+  ANSWER_FLASHCARD_SCHEMA,
+  GET_FLASHCARD_SCHEMA,
 } = require("../schemas/flashcard.schema");
 
 const Flashcard = new FlashcardService();
@@ -41,6 +43,24 @@ router.delete(
     try {
       const deletedFlashcard = await Flashcard.delete(flashcardId);
       return res.json(deletedFlashcard);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.put(
+  "/answer/:flashcardId",
+  passport.authenticate("jwt", { session: false }),
+  validatorHandler(GET_FLASHCARD_SCHEMA, "params"),
+  validatorHandler(ANSWER_FLASHCARD_SCHEMA, "body"),
+  checkOwnerPermission(Flashcard, "params", "courseId"),
+  async (req, res, next) => {
+    const { score } = req.body;
+    const { flashcardId } = req.params;
+    try {
+      const flashcardInfo = await Flashcard.answer(flashcardId, score);
+      return res.json(flashcardInfo);
     } catch (error) {
       next(error);
     }
