@@ -1,5 +1,6 @@
 const { models } = require("../../lib/sequelize");
 const boom = require("@hapi/boom");
+const { Sequelize } = require("sequelize");
 
 class FlashcardService {
   constructor() {}
@@ -19,6 +20,7 @@ class FlashcardService {
     }
     return flashcard;
   }
+
   async upsert(payload) {
     const [newFlashcard, isCreated] = await models.Flashcard.upsert(payload);
     return newFlashcard;
@@ -28,6 +30,22 @@ class FlashcardService {
     const flashcard = await this.findById(id);
     const deletedFlashcard = flashcard.destroy({ returning: ["id"] });
     return deletedFlashcard;
+  }
+
+  async answer(id, score) {
+    const lastReviewed = new Date();
+    const flashcard = await this.findById(id);
+    const payload = {
+      ...flashcard.dataValues,
+      lastScore: score,
+      lastReviewed: lastReviewed,
+    };
+    console.log(payload);
+    const [updatedFlashcard, created] = await models.Flashcard.upsert(payload, {
+      returning: true,
+      fields: ["lastScore", "lastReviewed"],
+    });
+    return updatedFlashcard;
   }
 }
 

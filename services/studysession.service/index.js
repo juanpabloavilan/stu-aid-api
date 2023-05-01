@@ -48,7 +48,19 @@ class StudySessionService {
         },
         userId: userId,
       },
-      include: { all: true },
+      include: {
+        model: models.Subject,
+        as: "subject",
+        where: {},
+        include: {
+          model: models.Course,
+          as: "course",
+          attributes: ["name", "userId", "id"],
+          where: {
+            userId: userId,
+          },
+        },
+      },
       order: [["nextRevision"], ["lastScore", "DESC"]],
     };
 
@@ -61,12 +73,12 @@ class StudySessionService {
 
     const { subject } = query;
     if (subject) {
-      options.where.subjectId = subject;
+      options.include.where.id = subject;
     }
 
     const { course } = query;
     if (course) {
-      options.where.subject.courseId = course;
+      options.include.where.courseId = course;
     }
 
     const flashcardsToReview = await models.Flashcard.findAll(options);

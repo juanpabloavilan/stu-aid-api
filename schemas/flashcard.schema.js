@@ -36,6 +36,7 @@ const lastReviewed = Joi.string().isoDate().allow(null);
 const lastScore = Joi.number().allow(null);
 const createdAt = Joi.string().isoDate().allow(null);
 const updatedAt = Joi.string().isoDate().allow(null);
+const score = Joi.number().positive().min(1).max(5);
 
 const UPSERT_FLASHCARD_SCHEMA = Joi.object({
   id: id,
@@ -66,8 +67,21 @@ const DELETE_FLASHCARD_SCHEMA = Joi.object({
   courseId: id.required(),
   subjectId: id.required(),
 });
+
+const GET_FLASHCARD_SCHEMA = Joi.object({
+  flashcardId: id.required(),
+  courseId: id.required(),
+  subjectId: id.required(),
+});
+
+const ANSWER_FLASHCARD_SCHEMA = Joi.object({
+  score: score.required(),
+});
+
 module.exports = {
   UPSERT_FLASHCARD_SCHEMA,
   FLASHCARD,
   DELETE_FLASHCARD_SCHEMA,
+  GET_FLASHCARD_SCHEMA,
+  ANSWER_FLASHCARD_SCHEMA,
 };

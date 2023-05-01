@@ -1,19 +1,34 @@
 const calculateNextSession = (lastReviewed, lastScore) => {
-  let nextRevision = new Date(lastReviewed);
-  if (lastScore <= 1) nextRevision.setDate(nextRevision.getDate() + 1);
-  if (lastScore <= 2 && lastScore > 1)
-    nextRevision.setDate(nextRevision.setDate(nextRevision.getDate + 2));
-  if (lastScore <= 3 && lastScore > 2)
-    nextRevision.setDate(nextRevision.setDate(nextRevision.getDate + 7));
-  if (lastScore <= 4 && lastScore > 3)
-    nextRevision.setDate(nextRevision.setDate(nextRevision.getDate + 15));
-  if (lastScore <= 5 && lastScore > 4)
-    nextRevision.setDate(nextRevision.setDate(nextRevision.getDate + 30));
-
   console.log(
-    "🚀 ~ file: flashcard.model.js:68 ~ set ~ nextRevision:",
+    "🚀 ~ file: nextSession.js:2 ~ calculateNextSession ~ lastScore:",
+    lastScore
+  );
+  console.log(
+    "🚀 ~ file: nextSession.js:2 ~ calculateNextSession ~ lastReviewed:",
+    lastReviewed
+  );
+
+  let nextRevision = new Date(lastReviewed);
+  console.log(
+    "🚀 ~ file: nextSession.js:3 ~ calculateNextSession ~ nextRevision:",
     nextRevision
   );
+  if (lastScore <= 1 && lastScore >= 0)
+    nextRevision.setDate(nextRevision.getDate());
+  if (lastScore <= 2 && lastScore > 1)
+    nextRevision.setDate(nextRevision.getDate() + 3);
+  if (lastScore <= 3 && lastScore > 2)
+    nextRevision.setDate(nextRevision.getDate() + 8);
+  if (lastScore <= 4 && lastScore > 3)
+    nextRevision.setDate(nextRevision.getDate() + 16);
+  if (lastScore <= 5 && lastScore > 4)
+    nextRevision.setDate(nextRevision.getDate() + 31);
+
+  console.log(
+    "🚀 ~ file: nextSession.js:3 ~ calculateNextSession ~ nextRevision:",
+    nextRevision
+  );
+
   return nextRevision;
 };
 
